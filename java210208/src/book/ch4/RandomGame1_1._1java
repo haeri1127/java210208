@@ -1,0 +1,47 @@
+package book.ch4;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class RandomGame1_1 {
+
+	public static void main(String[] args) {
+		//난수 발생을 지원하는 클래스 추가하기 - 인스턴스화 하기
+		Random r = new Random();
+		//그 클래스가 제공하는 메소드를 호출하여 채번하기
+		int pcdap = r.nextInt(10);
+		//사용자로부터 입력한 값 받아오기
+		System.out.println("0부터 9중에서 골라보세용~~~");
+		Scanner sc = new Scanner(System.in);
+		System.out.println("pc답 "+pcdap);
+		//사용자가 입력한 값 담기 - 선언하기, 초기화
+		//질문 : 콘솔에서 입력 받은 값은 숫자야? 아님 문자야?
+		
+		
+		
+		//0부터 9중에서 골라봐~~~~ㅋㅋ?
+		//기회를 3번까지는 준다 - 1번, 2번, 3번 - 반복문
+		for(int count=0; count<3; count++){
+			//insert here - 실행문
+			int inputnum = sc.nextInt();		
+			//판별식
+			if(inputnum>pcdap) {
+				System.out.println(inputnum+"보다 작습니다");
+			}
+			else if(inputnum<pcdap){
+				System.out.println(inputnum+"보다 큽니다");
+			}else if(inputnum==pcdap) {
+				System.out.println("정답입니다!");				
+				return;
+			}
+				System.out.println("기회끝! 넌 바보");
+				
+			
+			//넌 바보 - break;//for문을 탈출하기, if문을 탈출하려면 return
+							
+			//정답입니다.			
+		}//////////////////end of for문
+		
+	}
+
+}
