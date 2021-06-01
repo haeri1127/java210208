@@ -47,7 +47,7 @@ public class RandomGameView implements ActionListener{
 		for(int i=0;i<jbtns.length;i++) {
 			jbtn = new JButton(nums_label[i]);
 			jp_south.add(jbtn);
-			jbtn[i] = jbtn
+			jbtns[i] = jbtn;
 			jbtn.addActionListener(this);
 		}
 		jp_east.setBackground(Color.blue);

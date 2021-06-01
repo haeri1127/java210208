@@ -1,5 +1,6 @@
 package com.util;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,8 +8,9 @@ import java.sql.ResultSet;
 
 public class DBConnectionMgr {
 	private final static String _DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private final static String _URL 	= "jdbc:oracle:thin:@192.168.0.36:1521:orcl11";
+	private final static String _URL 	= "jdbc:oracle:thin:@localhost:1521:orcl11";
 	private final static String _USER 	= "tomato";
+	//private final static String _USER 	= "SCOTT";
 	private final static String _PW 	= "tiger";
 	private static DBConnectionMgr dbMgr = null; //게으른 인스턴스화
 	//이른 인스턴스화 eager
@@ -64,5 +66,17 @@ public class DBConnectionMgr {
 	         // TODO: handle exception
 	      }
 	   }
-
+	   public void freeConnection(Connection con, CallableStatement cstmt) {
+		      try {
+		         if(cstmt !=null) cstmt.close();
+		         if(con !=null) con.close();
+		      } catch (Exception e) {
+		         // TODO: handle exception
+		      }
+		   }
+	   /*
+	       * 주의: 사용한 자원은 반드시 명시적으로 반납할 것.
+	       * 안하면 오라클 서버로 세션을 종료 당함. 오라클 서버의 세션 수가 정해져 있어서 끊기게 됨. 
+	       */
+	  
 }

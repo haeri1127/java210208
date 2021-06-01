@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,8 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginForm extends JFrame implements ActionListener {
+import common.jdbc.MemberDao;
+
+public class LoginForm extends JDialog implements ActionListener {
 	String imgPath = "src\\com\\design\\zipcode\\";
+	MemberShip ms = new MemberShip();
 	ImageIcon ig 		= new ImageIcon(imgPath+"main.png");
 	JLabel jlb_id 		= new JLabel("아이디");
 	JTextField jtf_id 	= new JTextField("test");
@@ -30,7 +34,7 @@ public class LoginForm extends JFrame implements ActionListener {
 					new ImageIcon(imgPath+"confirm.png"));
 	//TalkDao tDao = new TalkDao();
 	String 				nickName= null;//닉네임 등록
-	LoginForm(){
+	public LoginForm(){
 		
 	}
 	//내부 클래스로 배경 이미지 처리
@@ -43,6 +47,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	}
 	public void initDisplay() {
 		jbtn_login.addActionListener(this);
+		jbtn_join.addActionListener(this);
 		this.setContentPane(new MyPanel());
 		this.setLayout(null);//디폴트 - BorderLayout
 		jlb_id.setBounds(45, 200, 80, 40);
@@ -71,7 +76,35 @@ public class LoginForm extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		if(jbtn_login==obj) {
+		if(jbtn_join==obj) {
+			ms.initDisplay();
+			this.dispose();
+		}
+		else if(jbtn_login==obj) {
+			MemberDao md = new MemberDao();
+			if("".equals(jtf_id.getText())||"".equals(jtf_pw.getText())) {
+				JOptionPane.showMessageDialog(this, "아이디와 비번을 확인하세요");
+				return; //actionPerformed 탈출하기
+			}
+			try {
+				String mem_id = jtf_id.getText();
+				String mem_pw = jtf_pw.getText();
+				String msg = md.login(mem_id, mem_pw);
+				if("비밀번호가 틀립니다.".equals(msg)) {
+					JOptionPane.showMessageDialog(this, "비번을 확인하세요");
+					jtf_pw.setText(""); //고치기
+					return;
+				}else if("아이디가 존재하지 않습니다.".equals(msg)) {
+					JOptionPane.showMessageDialog(this, "아이디를 확인하세요");
+					jtf_id.setText(""); //고치기
+					return;
+				}else {
+					JOptionPane.showMessageDialog(this, "로그인 성공!!","info", JOptionPane.INFORMATION_MESSAGE);
+					this.setVisible(false);
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 		
 	}
